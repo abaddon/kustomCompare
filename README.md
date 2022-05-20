@@ -1,5 +1,6 @@
 # kustomCompare
 
+[![Maven Central](https://img.shields.io/maven-metadata/v?color=40BA13&metadataUrl=https%3A%2F%2Frepo1.maven.org%2Fmaven2%2Fio%2Fgithub%2Fabaddon%2FkustomCompare%2Fmaven-metadata.xml&versionPrefix=0.)](https://ossindex.sonatype.org/component/pkg:maven/io.github.abaddon/kustomCompare)
 [![Java CI with Gradle](https://github.com/abaddon/kustomCompare/actions/workflows/gradle.yml/badge.svg)](https://github.com/abaddon/kustomCompare/actions/workflows/gradle.yml)
 [![codecov](https://codecov.io/gh/abaddon/kustomCompare/branch/main/graph/badge.svg?token=N24T6BXQB8)](https://codecov.io/gh/abaddon/kustomCompare)
 
