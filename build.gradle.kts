@@ -1,5 +1,4 @@
 group = "io.github.abaddon"
-version = "0.0.1"
 
 object Meta {
     const val desc = "A library to compare classes"
@@ -23,9 +22,24 @@ plugins {
     kotlin("jvm") version "1.6.0"
     jacoco
     `maven-publish`
+    id("com.palantir.git-version") version "0.15.0"
     id("io.github.gradle-nexus.publish-plugin") version "1.1.0"
     signing
 }
+
+val gitVersion: groovy.lang.Closure<String> by extra
+val versionDetails: groovy.lang.Closure<com.palantir.gradle.gitversion.VersionDetails> by extra
+val details = versionDetails()
+
+val lastTag=details.lastTag.substring(1)
+val snapshotTag= {
+    println("lastTag $lastTag")
+    val list=lastTag.split(".")
+    val third=(list.last().toInt() + 1).toString()
+    "${list[0]}.${list[1]}.$third-SNAPSHOT"
+}
+version = if(details.isCleanTag) lastTag else snapshotTag()
+println("version $version")
 
 
 publishing {
