@@ -1,9 +1,14 @@
+import org.jetbrains.kotlin.gradle.dsl.JvmTarget
+
 group = "io.github.abaddon"
 
 object Meta {
     const val desc = "A library to compare classes"
     const val license = "Apache-2.0"
     const val githubRepo = "abaddon/kustomCompare"
+    const val developerName = "Stefano Longhi"
+    const val developerOrganization = ""
+    const val organizationUrl = "https://github.com/abaddon"
 }
 
 object Versions {
@@ -16,10 +21,10 @@ object Versions {
 
 plugins {
     kotlin("jvm") version "2.1.21" // Updated as requested
-    jacoco
-    `maven-publish`
     id("com.palantir.git-version") version "3.0.0" // Updated from 0.15.0
     id("io.github.gradle-nexus.publish-plugin") version "2.0.0" // Updated from 1.1.0
+    jacoco
+    `maven-publish`
     signing
 }
 
@@ -34,16 +39,6 @@ val snapshotTag = {
     "${list[0]}.${list[1]}.$third-SNAPSHOT"
 }
 version = if(details.isCleanTag) lastTag else snapshotTag()
-println("version $version")
-
-
-publishing {
-    publications {
-        create<MavenPublication>("kustomCompare") {
-            from(components["kotlin"])
-        }
-    }
-}
 
 repositories {
     mavenCentral()
@@ -77,7 +72,7 @@ tasks.jacocoTestReport {
 }
 
 tasks.withType<org.jetbrains.kotlin.gradle.tasks.KotlinCompile>() {
-    kotlinOptions.jvmTarget = Versions.jvmTarget
+    compilerOptions.jvmTarget.set(JvmTarget.fromTarget(Versions.jvmTarget))
 }
 
 java {
@@ -103,11 +98,12 @@ signing {
 
 publishing {
     publications {
-        create<MavenPublication>("maven") {
+        create<MavenPublication>("KustomCompare") {
             groupId = project.group.toString()
             artifactId = project.name
             version = project.version.toString()
-            from(components["kotlin"])
+            // from(components["kotlin"]) - This line was commented out in the original
+            artifact(tasks["jar"])
             artifact(tasks["sourcesJar"])
             artifact(tasks["javadocJar"])
             pom {
@@ -122,10 +118,9 @@ publishing {
                 }
                 developers {
                     developer {
-                        id.set("hpehl")
-                        name.set("Harald Pehl")
-                        organization.set("Red Hat")
-                        organizationUrl.set("https://developers.redhat.com/")
+                        name.set(Meta.developerName)
+                        organization.set(Meta.developerOrganization)
+                        organizationUrl.set(Meta.organizationUrl)
                     }
                 }
                 scm {
